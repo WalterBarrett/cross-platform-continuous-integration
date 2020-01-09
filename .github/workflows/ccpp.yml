@@ -1,0 +1,29 @@
+name: C/C++ CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: [ubuntu-latest, windows-latest]
+    steps:
+    - uses: actions/checkout@v1
+    - name: configure
+      run: ./configure
+    - name: make
+      run: make
+    - name: make dist
+      run: make dist
+    - name: Release
+    - uses: anton-yurchenko/git-release@v3.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        DRAFT_RELEASE: "false"
+        PRE_RELEASE: "true"
+        CHANGELOG_FILE: "CHANGELOG.md"
+        ALLOW_EMPTY_CHANGELOG: "true"
+        ALLOW_TAG_PREFIX: "true"
+      with:
+        args: |
+            build/darwin-amd64.zip
+            build/linux-amd64.zip
+            build/windows-amd64.zip
