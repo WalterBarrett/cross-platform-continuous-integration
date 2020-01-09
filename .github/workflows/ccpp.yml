@@ -6,7 +6,8 @@ jobs:
   build:
     runs-on: [ubuntu-latest, windows-latest]
     steps:
-    - uses: actions/checkout@v1
+    - name: Checkout
+      uses: actions/checkout@v1
     - name: configure
       run: ./configure
     - name: make
@@ -14,7 +15,7 @@ jobs:
     - name: make dist
       run: make dist
     - name: Release
-    - uses: anton-yurchenko/git-release@v3.0.1
+      uses: anton-yurchenko/git-release@v3.0.1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         DRAFT_RELEASE: "false"
