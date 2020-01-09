@@ -26,10 +26,14 @@ jobs:
     - name: List Directories
       run: ls
       if: matrix.true-os == 'native'
-    - name: automake stuff
+    - name: aclocal
       if: matrix.true-os == 'native'
       run: aclocal
+    - name: autoconf
+      if: matrix.true-os == 'native'
       run: autoconf
+    - name: autoconf
+      if: automake
       run: automake --add-missing
     - name: configure
       run: ./configure
