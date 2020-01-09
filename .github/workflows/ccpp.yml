@@ -32,8 +32,8 @@ jobs:
     - name: autoconf
       if: matrix.true-os == 'native'
       run: autoconf
-    - name: autoconf
-      if: automake
+    - name: automake
+      if: matrix.true-os == 'native'
       run: automake --add-missing
     - name: configure
       run: ./configure
