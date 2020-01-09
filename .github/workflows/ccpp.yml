@@ -50,6 +50,7 @@ jobs:
     - name: Show directory again
       run: ls
     - name: Release
+      if: matrix.true-os != 'dos'
       uses: actions/upload-artifact@v1
       with:
         name: ${{ matrix.true-os }}.tar.gz
