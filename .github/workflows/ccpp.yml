@@ -51,7 +51,7 @@ jobs:
       run: ls
     - name: Release
       uses: anton-yurchenko/git-release@v3.0.1
-      if: matrix.os == 'ubuntu-latest'
+      if: matrix.os == 'ubuntu-latest' && matrix.true-os == 'native'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         DRAFT_RELEASE: "false"
@@ -61,6 +61,4 @@ jobs:
         ALLOW_TAG_PREFIX: "true"
       with:
         args: |
-            build/darwin-amd64.zip
-            build/linux-amd64.zip
-            build/windows-amd64.zip
+            helloworld-0.01.tar.gz
