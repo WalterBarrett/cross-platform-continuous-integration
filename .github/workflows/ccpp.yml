@@ -9,7 +9,6 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest, macos-latest] #, windows-latest
-#       true-os: [native]
         true-os: [native, dos]
         exclude:
           - os: windows-latest
@@ -55,18 +54,6 @@ jobs:
       with:
         name: ${{ matrix.os }}.tar.gz
         path: helloworld-0.01.tar.gz
-#     uses: anton-yurchenko/git-release@v3.0.1
-#     if: matrix.os == 'ubuntu-latest' && matrix.true-os == 'native'
-#     env:
-#       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#       DRAFT_RELEASE: "false"
-#       PRE_RELEASE: "true"
-#       CHANGELOG_FILE: "CHANGELOG.md"
-#       ALLOW_EMPTY_CHANGELOG: "true"
-#       ALLOW_TAG_PREFIX: "true"
-#     with:
-#       args: |
-#           helloworld-0.01.tar.gz
   release:
     runs-on: ubuntu-latest
     needs: [build]
@@ -83,7 +70,7 @@ jobs:
           path: build/macos-latest.tar.gz
       - name: GitHub Releases
         uses: fnkr/github-action-ghr@v1
-#       if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/')
         env:
 #         GHR_COMPRESS: xz
           GHR_PATH: build/
