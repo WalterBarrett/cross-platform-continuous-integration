@@ -8,14 +8,14 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-latest] #, windows-latest, macos-latest]
-        true-os: [native]
-#       true-os: [native, dos]
-#       exclude:
-#         - os: windows-latest
-#           true-os: dos
-#         - os: macos-latest
-#           true-os: dos
+        os: [ubuntu-latest, windows-latest, macos-latest]
+#       true-os: [native]
+        true-os: [native, dos]
+        exclude:
+          - os: windows-latest
+            true-os: dos
+          - os: macos-latest
+            true-os: dos
     steps:
     - name: DOS test
       run: echo "This is building for DOS."
@@ -26,14 +26,19 @@ jobs:
     - name: List Directories
       run: ls
       if: matrix.true-os == 'native'
+    - name: automake stuff
+      if: matrix.true-os == 'native'
+      run: aclocal
+      run: autoconf
+      run: automake --add-missing
     - name: configure
       run: ./configure
       if: matrix.true-os == 'native'
     - name: make
       run: make
       if: matrix.true-os == 'native'
-    - name: make checkdist
-      run: make checkdist
+    - name: make distcheck
+      run: make distcheck
       if: matrix.true-os == 'native'
     - name: Release
       uses: anton-yurchenko/git-release@v3.0.1
