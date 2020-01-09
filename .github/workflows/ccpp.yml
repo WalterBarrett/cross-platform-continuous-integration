@@ -4,18 +4,36 @@ on: [push]
 
 jobs:
   build:
-    runs-on: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        true-os: [native, dos]
+        exclude:
+          - os: windows-latest
+            true-os: dos
+          - os: macos-latest
+            true-os: dos
     steps:
     - name: Checkout
       uses: actions/checkout@v1
+      if: matrix.true-os == 'native'
     - name: configure
       run: ./configure
+      if: matrix.true-os == 'native'
+    - name: DOS test
+      run: echo "This is DOS."
+      if: matrix.true-os == 'dos'
     - name: make
       run: make
+      if: matrix.true-os == 'native'
     - name: make dist
       run: make dist
+      if: matrix.true-os == 'native'
     - name: Release
       uses: anton-yurchenko/git-release@v3.0.1
+      if: matrix.true-os == 'native'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         DRAFT_RELEASE: "false"
