@@ -49,7 +49,11 @@ jobs:
       if: matrix.true-os == 'native'
     - name: Show directory again
       run: ls
-#   - name: Release
+    - name: Release
+      uses: actions/upload-artifact@v1
+      with:
+        name: ${{ matrix.true-os }}.tar.gz
+        path: helloworld-0.01.tar.gz
 #     uses: anton-yurchenko/git-release@v3.0.1
 #     if: matrix.os == 'ubuntu-latest' && matrix.true-os == 'native'
 #     env:
