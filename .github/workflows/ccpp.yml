@@ -49,11 +49,11 @@ jobs:
       if: matrix.true-os == 'native'
     - name: Show directory again
       run: ls
-    - name: Release
+    - name: Stash
       if: matrix.true-os != 'dos'
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ matrix.true-os }}.tar.gz
+        name: ${{ matrix.os }}.tar.gz
         path: helloworld-0.01.tar.gz
 #     uses: anton-yurchenko/git-release@v3.0.1
 #     if: matrix.os == 'ubuntu-latest' && matrix.true-os == 'native'
@@ -67,3 +67,24 @@ jobs:
 #     with:
 #       args: |
 #           helloworld-0.01.tar.gz
+  release:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Download the Linux dist.
+        uses: actions/download-artifact@v1
+        with:
+          name: ubuntu-latest.tar.gz
+          path:  build/ubuntu-latest.tar.gz
+      - name: Download the macOS dist.
+        uses: actions/download-artifact@v1
+        with:
+          name: macos-latest.tar.gz
+          path: build/macos-latest.tar.gz
+      - name: GitHub Releases
+        uses: fnkr/github-action-ghr@v1
+#       if: startsWith(github.ref, 'refs/tags/')
+        env:
+#         GHR_COMPRESS: xz
+          GHR_PATH: build/
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
