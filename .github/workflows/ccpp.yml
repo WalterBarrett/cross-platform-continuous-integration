@@ -47,9 +47,11 @@ jobs:
     - name: make distcheck
       run: make distcheck
       if: matrix.true-os == 'native'
+    - name: Show directory again
+      run: ls
     - name: Release
       uses: anton-yurchenko/git-release@v3.0.1
-      if: matrix.true-os == 'native'
+      if: matrix.os == 'ubuntu-latest'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         DRAFT_RELEASE: "false"
