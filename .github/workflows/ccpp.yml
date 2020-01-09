@@ -49,16 +49,16 @@ jobs:
       if: matrix.true-os == 'native'
     - name: Show directory again
       run: ls
-    - name: Release
-      uses: anton-yurchenko/git-release@v3.0.1
-      if: matrix.os == 'ubuntu-latest' && matrix.true-os == 'native'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        DRAFT_RELEASE: "false"
-        PRE_RELEASE: "true"
-        CHANGELOG_FILE: "CHANGELOG.md"
-        ALLOW_EMPTY_CHANGELOG: "true"
-        ALLOW_TAG_PREFIX: "true"
-      with:
-        args: |
-            helloworld-0.01.tar.gz
+#   - name: Release
+#     uses: anton-yurchenko/git-release@v3.0.1
+#     if: matrix.os == 'ubuntu-latest' && matrix.true-os == 'native'
+#     env:
+#       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       DRAFT_RELEASE: "false"
+#       PRE_RELEASE: "true"
+#       CHANGELOG_FILE: "CHANGELOG.md"
+#       ALLOW_EMPTY_CHANGELOG: "true"
+#       ALLOW_TAG_PREFIX: "true"
+#     with:
+#       args: |
+#           helloworld-0.01.tar.gz
