@@ -20,15 +20,18 @@ jobs:
       if: matrix.true-os == 'dos'
       run: |
         wget https://github.com/andrewwutw/build-djgpp/releases/download/v2.8/djgpp-linux64-gcc720.tar.bz2
-        tar -xvf djgpp-linux64-gcc720.tar.bz2
-        export PATH=$PWD/djgpp/bin:$PATH
-        echo "### PATH ###"
-        echo $PATH
-        echo "### DJGPP Location ###"
-        echo $PWD/djgpp/bin
-        echo "### List Directory DJGPP Location Structure ###"
-        cd $PWD/djgpp/bin
-        ls -l
+        tar -xvf djgpp-linux64-gcc720.tar.bz2 -C /usr/local/
+        echo "### /usr/local/ ###"
+        ls -l /usr/local/
+#       tar -xvf djgpp-linux64-gcc720.tar.bz2
+#       export PATH=$PWD/djgpp/bin:$PATH
+#       echo "### PATH ###"
+#       echo $PATH
+#       echo "### DJGPP Location ###"
+#       echo $PWD/djgpp/bin
+#       echo "### List Directory DJGPP Location Structure ###"
+#       cd $PWD/djgpp/bin
+#       ls -l
     - name: Mac Setup
       if: matrix.os == 'macos-latest'
       run: |
@@ -47,7 +50,8 @@ jobs:
       run: ./configure
     - name: Configure (DOS)
       if: matrix.true-os == 'dos'
-      run: ./configure --build x86_64-pc-linux-gnu --host i586-pc-msdosdjgpp
+#     run: ./configure --build x86_64-pc-linux-gnu --host i586-pc-msdosdjgpp
+      run: ./configure --host i586-pc-msdosdjgpp
     - name: make
 #     if: matrix.true-os == 'native'
       run: |
