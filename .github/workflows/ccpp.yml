@@ -24,6 +24,7 @@ jobs:
         export PATH=$PWD/djgpp/i586-pc-msdosdjgpp/bin/:$PATH
         export GCC_EXEC_PREFIX=$PWD/djgpp/lib/gcc/
         echo "PATH: $PATH"
+        i586-pc-msdosdjgpp-gcc --version
     - name: Mac Setup
       if: matrix.os == 'macos-latest'
       run: |
