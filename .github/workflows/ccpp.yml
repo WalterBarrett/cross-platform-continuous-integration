@@ -23,6 +23,7 @@ jobs:
         tar -xf djgpp-linux64-gcc720.tar.bz2
         export PATH=$PWD/djgpp/i586-pc-msdosdjgpp/bin/:$PATH
         export GCC_EXEC_PREFIX=$PWD/djgpp/lib/gcc/
+        echo "PATH: $PATH"
     - name: Mac Setup
       if: matrix.os == 'macos-latest'
       run: |
@@ -42,7 +43,7 @@ jobs:
     - name: Configure (DOS)
       if: matrix.true-os == 'dos'
 #     run: ./configure --build x86_64-pc-linux-gnu --host i586-pc-msdosdjgpp
-      run: ./configure --host i586-pc-msdosdjgpp --prefix=$PWD/djgpp/lib/gcc/
+      run: ./configure --host i586-pc-msdosdjgpp --prefix=${PWD}/djgpp/lib/gcc/
     - name: make
 #     if: matrix.true-os == 'native'
       run: |
