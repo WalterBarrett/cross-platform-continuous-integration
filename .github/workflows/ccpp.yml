@@ -36,7 +36,9 @@ jobs:
       run: make
     - name: Build (DOS)
       if: matrix.true-os == 'dos'
-      run: make PREFIX="i586-pc-msdosdjgpp-"
+      run: |
+        echo "PATH: $PATH"
+        make PREFIX="i586-pc-msdosdjgpp-"
     - name: List Directory Structure
       run: ls -l
     - name: Stash (Native)
