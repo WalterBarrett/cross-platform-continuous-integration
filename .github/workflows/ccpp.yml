@@ -47,8 +47,7 @@ jobs:
       run: ./configure
     - name: Configure (DOS)
       if: matrix.true-os == 'dos'
-#     run: ./configure --build i686-pc-linux-gnu --host i586-pc-msdosdjgpp
-      run: ./configure --host i586-pc-msdosdjgpp
+      run: ./configure --build x86_64-pc-linux-gnu --host i586-pc-msdosdjgpp
     - name: make
 #     if: matrix.true-os == 'native'
       run: |
