@@ -18,7 +18,7 @@ jobs:
           - os: macos-latest
             true-os: dos
     steps:
-    - name: Mac Setup
+    - name: "macOS: Setup"
       if: matrix.os == 'macos-latest'
       run: brew install autoconf automake libtool
     - name: Checkout
@@ -26,17 +26,13 @@ jobs:
     - name: Build (Native)
       if: matrix.true-os == 'native'
       run: make
-    - name: Build (DOS)
+    - name: "DOS: Build"
       if: matrix.true-os == 'dos'
       run: |
         wget -q https://github.com/andrewwutw/build-djgpp/releases/download/v2.8/djgpp-linux64-gcc720.tar.bz2
         tar -xf djgpp-linux64-gcc720.tar.bz2
-        export BASE_DIR=${PWD}/djgpp
-        export PATH=$BASE_DIR/bin/:$PATH
-        export GCC_EXEC_PREFIX=$BASE_DIR/lib/gcc/
-        i586-pc-msdosdjgpp-gcc --version
-        echo "PATH: $PATH"
-        make PREFIX="i586-pc-msdosdjgpp-"
+        export PATH=${PWD}/djgpp/bin/:$PATH
+        make PREFIX="i586-pc-msdosdjgpp-" MAIN="HELLO.EXE"
     - name: List Directory Structure
       run: ls -l
     - name: Stash (Native)
@@ -45,9 +41,16 @@ jobs:
       with:
         name: helloworld-${{ matrix.os }}
         path: helloworld
-    - name: Stash (Non-Native)
+    - name: "DOS: Prepare for Stash"
       if: matrix.true-os == 'dos'
+      run: |
+        wget -q http://sandmann.dotster.com/cwsdpmi/csdpmi7b.zip
+        unzip -q csdpmi7b.zip
+        mkdir temp-dist-dir
+        mv HELLO.EXE temp-dist-dir/HELLO.EXE
+        mv csdpmi7b/bin/CWSDPMI.EXE temp-dist-dir/CWSDPMI.EXE
+    - name: "DOS: Stash"
       uses: actions/upload-artifact@v1
       with:
         name: helloworld-${{ matrix.true-os }}
-        path: helloworld
+        path: temp-dist-dir
