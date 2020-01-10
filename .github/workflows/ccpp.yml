@@ -45,12 +45,12 @@ jobs:
         tar -xf djgpp-linux64-gcc720.tar.bz2
         export PATH=${PWD}/djgpp/bin/:$PATH
         make PREFIX="i586-pc-msdosdjgpp-" MAIN="HELLO.EXE"
-    - name: "DOS: Build"
+    - name: "C64: Build"
       if: matrix.os == 'c64'
       run: |
         apt install cc65
         export PATH=${PWD}/djgpp/bin/:$PATH
-        make CC="cc65" OPTS="-t c64"
+        make CC="cc65" COPTS="-t c64"
     - name: "DOS: Prepare for Stash"
       if: matrix.os == 'dos'
       run: |
