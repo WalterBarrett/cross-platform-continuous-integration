@@ -20,7 +20,7 @@ jobs:
       if: matrix.true-os == 'dos'
       run: |
         wget https://github.com/andrewwutw/build-djgpp/releases/download/v2.8/djgpp-linux64-gcc720.tar.bz2
-        tar -xf djgpp-linux64-gcc720.tar.bz2
+        @tar -xf djgpp-linux64-gcc720.tar.bz2
         export PATH=$PWD/djgpp/bin/:$PATH
         echo "### PATH ###"
         echo $PATH
@@ -49,7 +49,7 @@ jobs:
     - name: Configure (DOS)
       if: matrix.true-os == 'dos'
 #     run: ./configure --build x86_64-pc-linux-gnu --host i586-pc-msdosdjgpp
-      run: ./configure --host i586-pc-msdosdjgpp
+      run: ./configure --host i586-pc-msdosdjgpp --prefix=$PWD/djgpp/lib/gcc/
     - name: make
 #     if: matrix.true-os == 'native'
       run: |
