@@ -16,9 +16,13 @@ jobs:
           - os: macos-latest
             true-os: dos
     steps:
-    - name: DOS test
-      run: echo "This is building for DOS."
+    - name: DOS Setup
       if: matrix.true-os == 'dos'
+      run: wget https://github.com/andrewwutw/build-djgpp/releases/download/v2.8/djgpp-linux64-gcc720.tar.bz2
+    - if: matrix.true-os == 'dos'
+      run: tar -xvf djgpp-linux64-gcc720.tar.bz2
+    - if: matrix.true-os == 'dos'
+      run: export PATH=$PWD/djgpp/bin:$PATH
     - name: Homebrew for Mac
       if: matrix.os == 'macos-latest'
       run: brew install autoconf automake libtool
@@ -37,9 +41,13 @@ jobs:
     - name: automake
       if: matrix.true-os == 'native'
       run: automake --add-missing
-    - name: configure
+    - name: configure (Native)
       run: ./configure
       if: matrix.true-os == 'native'
+    - name: configure (DOS)
+#     run: ./configure --build i686-pc-linux-gnu --host djgpp-linux64-gcc720
+      run: ./configure --host djgpp-linux64-gcc720
+      if: matrix.true-os == 'dos'
     - name: make
       run: make
       if: matrix.true-os == 'native'
@@ -48,60 +56,66 @@ jobs:
       if: matrix.true-os == 'native'
     - name: Show directory again
       run: ls
-    - name: Stash
-      if: matrix.true-os != 'dos'
+    - name: Stash (Native)
+      if: matrix.true-os == 'native'
       uses: actions/upload-artifact@v1
       with:
         name: ${{ matrix.os }}.tar.gz
         path: helloworld-0.01.tar.gz
-  release:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - name: Download the Linux dist.
-        uses: actions/download-artifact@v1
-        with:
-          name: ubuntu-latest.tar.gz
-          path: build/ubuntu-latest.tar.gz
-      - name: Download the macOS dist.
-        uses: actions/download-artifact@v1
-        with:
-          name: macos-latest.tar.gz
-          path: build/macos-latest.tar.gz
-#     - name: GitHub Releases
-#       uses: fnkr/github-action-ghr@v1
-#       if: startsWith(github.ref, 'refs/tags/')
+    - name: Stash (DOS)
+      if: matrix.true-os == 'dos'
+      uses: actions/upload-artifact@v1
+      with:
+        name: ${{ matrix.true-os }}.tar.gz
+        path: helloworld-0.01.tar.gz
+# release:
+#   runs-on: ubuntu-latest
+#   needs: [build]
+#   steps:
+#     - name: Download the Linux dist.
+#       uses: actions/download-artifact@v1
+#       with:
+#         name: ubuntu-latest.tar.gz
+#         path: build/ubuntu-latest.tar.gz
+#     - name: Download the macOS dist.
+#       uses: actions/download-artifact@v1
+#       with:
+#         name: macos-latest.tar.gz
+#         path: build/macos-latest.tar.gz
+##    - name: GitHub Releases
+##      uses: fnkr/github-action-ghr@v1
+##      if: startsWith(github.ref, 'refs/tags/')
+##      env:
+###       GHR_COMPRESS: xz
+##        GHR_PATH: build/
+##        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#     - name: Create Release
+#       id: create_release
+#       uses: actions/create-release@v1.0.0
 #       env:
-##        GHR_COMPRESS: xz
-#         GHR_PATH: build/
 #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: true
-      - name: Upload Ubuntu Release Asset
-        id: upload-release-asset-ubuntu
-        uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./build/ubuntu-latest.tar.gz
-          asset_name: ubuntu-latest.tar.gz
-          asset_content_type: application/gzip
-      - name: Upload macOS Release Asset
-        id: upload-release-asset-macos
-        uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./build/ubuntu-latest.tar.gz
-          asset_name: ubuntu-latest.tar.gz
-          asset_content_type: application/gzip
+#       with:
+#         tag_name: ${{ github.ref }}
+#         release_name: Release ${{ github.ref }}
+#         draft: false
+#         prerelease: true
+#     - name: Upload Ubuntu Release Asset
+#       id: upload-release-asset-ubuntu
+#       uses: actions/upload-release-asset@v1.0.1
+#       env:
+#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       with:
+#         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+#         asset_path: ./build/ubuntu-latest.tar.gz
+#         asset_name: ubuntu-latest.tar.gz
+#         asset_content_type: application/gzip
+#     - name: Upload macOS Release Asset
+#       id: upload-release-asset-macos
+#       uses: actions/upload-release-asset@v1.0.1
+#       env:
+#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       with:
+#         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+#         asset_path: ./build/ubuntu-latest.tar.gz
+#         asset_name: ubuntu-latest.tar.gz
+#         asset_content_type: application/gzip
