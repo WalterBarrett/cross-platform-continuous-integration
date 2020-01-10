@@ -50,7 +50,7 @@ jobs:
       run: |
         sudo apt install cc65
         export PATH=${PWD}/djgpp/bin/:$PATH
-        make CC="cc65" COPTS="-t c64"
+        make CC="cl65" COPTS="-t c64"
     - name: "DOS: Prepare for Stash"
       if: matrix.os == 'dos'
       run: |
