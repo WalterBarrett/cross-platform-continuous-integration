@@ -52,6 +52,7 @@ jobs:
         mv HELLO.EXE temp-dist-dir/HELLO.EXE
         mv temp-extract-dir/bin/CWSDPMI.EXE temp-dist-dir/CWSDPMI.EXE
     - name: "DOS: Stash"
+      if: matrix.true-os == 'dos'
       uses: actions/upload-artifact@v1
       with:
         name: helloworld-${{ matrix.true-os }}
