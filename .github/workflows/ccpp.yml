@@ -48,7 +48,7 @@ jobs:
     - name: "C64: Build"
       if: matrix.os == 'c64'
       run: |
-        apt install cc65
+        sudo apt install cc65
         export PATH=${PWD}/djgpp/bin/:$PATH
         make CC="cc65" COPTS="-t c64"
     - name: "DOS: Prepare for Stash"
