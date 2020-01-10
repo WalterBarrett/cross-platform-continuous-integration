@@ -44,11 +44,15 @@ jobs:
     - name: "DOS: Prepare for Stash"
       if: matrix.true-os == 'dos'
       run: |
+        mkdir temp-dist-dir
+        mkdir temp-extract-dir
+        cd temp-extract-dir
         wget -q http://sandmann.dotster.com/cwsdpmi/csdpmi7b.zip
         unzip -q csdpmi7b.zip
-        mkdir temp-dist-dir
+        ls -l
+        cd ..
         mv HELLO.EXE temp-dist-dir/HELLO.EXE
-        mv csdpmi7b/bin/CWSDPMI.EXE temp-dist-dir/CWSDPMI.EXE
+        mv temp-extract-dir/bin/CWSDPMI.EXE temp-dist-dir/CWSDPMI.EXE
     - name: "DOS: Stash"
       uses: actions/upload-artifact@v1
       with:
