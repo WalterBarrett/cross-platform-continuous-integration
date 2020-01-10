@@ -19,8 +19,8 @@ jobs:
     - name: DOS Setup
       if: matrix.true-os == 'dos'
       run: |
-        wget https://github.com/andrewwutw/build-djgpp/releases/download/v2.8/djgpp-linux64-gcc720.tar.bz2
-        @tar -xf djgpp-linux64-gcc720.tar.bz2
+        wget -q https://github.com/andrewwutw/build-djgpp/releases/download/v2.8/djgpp-linux64-gcc720.tar.bz2
+        tar -xf djgpp-linux64-gcc720.tar.bz2
         export PATH=$PWD/djgpp/bin/:$PATH
         echo "### PATH ###"
         echo $PATH
