@@ -43,7 +43,7 @@ jobs:
 #     run: ./configure --build i686-pc-linux-gnu --host djgpp-linux64-gcc720
       run: ./configure --host djgpp-linux64-gcc720
     - name: make
-      if: matrix.true-os == 'native'
+#     if: matrix.true-os == 'native'
       run: |
         make
         make distcheck
