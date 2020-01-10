@@ -28,29 +28,15 @@ jobs:
         i586-pc-msdosdjgpp-gcc --version
     - name: Mac Setup
       if: matrix.os == 'macos-latest'
-      run: |
-        brew install autoconf automake libtool
+      run: brew install autoconf automake libtool
     - name: Checkout
-#     if: matrix.true-os == 'native'
       uses: actions/checkout@v1
-    - name: Automake
-#     if: matrix.true-os == 'native'
-      run: |
-        aclocal
-        autoconf
-        automake --add-missing
-    - name: Configure (Native)
+    - name: Build (Native)
       if: matrix.true-os == 'native'
-      run: ./configure
-    - name: Configure (DOS)
+      run: make
+    - name: Build (DOS)
       if: matrix.true-os == 'dos'
-#     run: ./configure --build x86_64-pc-linux-gnu --host i586-pc-msdosdjgpp
-      run: ./configure --host i586-pc-msdosdjgpp --prefix=${BASE_DIR}/lib/gcc/
-    - name: make
-#     if: matrix.true-os == 'native'
-      run: |
-        make
-#       make distcheck
+      run: make PREFIX="i586-pc-msdosdjgpp-"
     - name: List Directory Structure
       run: ls -l
     - name: Stash (Native)
