@@ -54,10 +54,10 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: helloworld-${{ matrix.os }}
-        path: helloworld-0.01.tar.gz
+        path: helloworld
     - name: Stash (Non-Native)
       if: matrix.true-os == 'dos'
       uses: actions/upload-artifact@v1
       with:
         name: helloworld-${{ matrix.true-os }}
-        path: helloworld-0.01.tar.gz
+        path: helloworld
