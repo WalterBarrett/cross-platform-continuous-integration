@@ -31,6 +31,8 @@ jobs:
         tar -xf djgpp-linux64-gcc720.tar.bz2
         export PATH=${PWD}/djgpp/bin/:$PATH
         make PREFIX="i586-pc-msdosdjgpp-" MAIN="HELLO.EXE"
+    - name: List Directory Structure
+      run: ls
     - name: Stash (Native)
       if: matrix.true-os == 'native'
       uses: actions/upload-artifact@v1
