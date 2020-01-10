@@ -34,27 +34,18 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [dos, c64]
+        os: [dos32, c64]
     steps:
     - name: Checkout
       uses: actions/checkout@v1
-    - name: "DOS: Build"
-      if: matrix.os == 'dos'
+    - name: "DOS32: Build"
+      if: matrix.os == 'dos32'
       run: |
         wget -q https://github.com/andrewwutw/build-djgpp/releases/download/v2.8/djgpp-linux64-gcc720.tar.bz2
         tar -xf djgpp-linux64-gcc720.tar.bz2
         export PATH=${PWD}/djgpp/bin/:$PATH
         make PREFIX="i586-pc-msdosdjgpp-" MAIN="HELLO.EXE"
-    - name: "C64: Build"
-      if: matrix.os == 'c64'
-      run: |
-        sudo apt install cc65
-        export PATH=${PWD}/djgpp/bin/:$PATH
-        make CC="cl65" COPTS="-t c64"
-        mv helloworld helloworld.c64
-    - name: "DOS: Prepare for Stash"
-      if: matrix.os == 'dos'
-      run: |
+        echo "##### Packaging #####"
         mkdir temp-dist-dir
         mkdir temp-extract-dir
         cd temp-extract-dir
@@ -63,17 +54,18 @@ jobs:
         cd ..
         mv HELLO.EXE temp-dist-dir/HELLO.EXE
         mv temp-extract-dir/bin/CWSDPMI.EXE temp-dist-dir/CWSDPMI.EXE
+    - name: "C64: Build"
+      if: matrix.os == 'c64'
+      run: |
+        sudo apt install cc65
+        export PATH=${PWD}/djgpp/bin/:$PATH
+        make CC="cl65" COPTS="-t c64"
+        mkdir temp-dist-dir
+        mv helloworld temp-dist-dir/helloworld.c64
     - name: List Directory Structure
       run: ls
-    - name: "DOS: Stash"
-      if: matrix.os == 'dos'
+    - name: "Stash"
       uses: actions/upload-artifact@v1
       with:
         name: helloworld-${{ matrix.os }}
         path: temp-dist-dir
-    - name: "C64: Stash"
-      if: matrix.os == 'c64'
-      uses: actions/upload-artifact@v1
-      with:
-        name: helloworld-${{ matrix.os }}
-        path: helloworld.c64
