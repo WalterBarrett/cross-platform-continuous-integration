@@ -36,7 +36,7 @@ jobs:
         autoconf
         automake --add-missing
     - name: Configure (Native)
-#     if: matrix.true-os == 'native'
+      if: matrix.true-os == 'native'
       run: ./configure
     - name: Configure (DOS)
       if: matrix.true-os == 'dos'
