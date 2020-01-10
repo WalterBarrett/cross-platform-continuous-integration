@@ -22,7 +22,7 @@ jobs:
         wget -q https://github.com/andrewwutw/build-djgpp/releases/download/v2.8/djgpp-linux64-gcc720.tar.bz2
         tar -xf djgpp-linux64-gcc720.tar.bz2
         export BASE_DIR=${PWD}/djgpp
-        echo "echo ::set-env name=PATH::$BASE_DIR/bin/:$PATH"
+        echo "::set-env name=PATH::$BASE_DIR/bin/:$PATH"
 #       export GCC_EXEC_PREFIX=$BASE_DIR/lib/gcc/
 #       i586-pc-msdosdjgpp-gcc --version
     - name: Mac Setup
