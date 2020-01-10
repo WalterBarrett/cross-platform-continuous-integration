@@ -72,7 +72,7 @@ jobs:
         name: helloworld-${{ matrix.os }}
         path: temp-dist-dir
     - name: "C64: Stash"
-      if: matrix.os == 'dos'
+      if: matrix.os == 'c64'
       uses: actions/upload-artifact@v1
       with:
         name: helloworld-${{ matrix.os }}
