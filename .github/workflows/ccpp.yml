@@ -20,16 +20,16 @@ jobs:
       if: matrix.true-os == 'dos'
       run: |
         wget https://github.com/andrewwutw/build-djgpp/releases/download/v2.8/djgpp-linux64-gcc720.tar.bz2
-        tar -xvf djgpp-linux64-gcc720.tar.bz2
+        tar -xf djgpp-linux64-gcc720.tar.bz2
+        export PATH=$PWD/djgpp/bin/:$PATH
         echo "### PATH ###"
         echo $PATH
-        echo "### $PWD/djgpp/bin ###"
-        ls -l $PWD/djgpp/bin
+        echo "### $PWD/djgpp/bin/ ###"
+        ls -l $PWD/djgpp/bin/
 #       tar -xvf djgpp-linux64-gcc720.tar.bz2 -C /usr/local/
 #        echo "### /usr/local/ ###"
 #        ls -l /usr/local/
 #       tar -xvf djgpp-linux64-gcc720.tar.bz2
-#       export PATH=$PWD/djgpp/bin/:$PATH
     - name: Mac Setup
       if: matrix.os == 'macos-latest'
       run: |
