@@ -21,8 +21,9 @@ jobs:
       run: |
         wget -q https://github.com/andrewwutw/build-djgpp/releases/download/v2.8/djgpp-linux64-gcc720.tar.bz2
         tar -xf djgpp-linux64-gcc720.tar.bz2
-        export PATH=$PWD/djgpp/i586-pc-msdosdjgpp/bin/:$PATH
-        export GCC_EXEC_PREFIX=$PWD/djgpp/lib/gcc/
+        export BASE_DIR=${PWD}/djgpp
+        export PATH=$BASE_DIR/bin/:$PATH
+        export GCC_EXEC_PREFIX=$BASE_DIR/lib/gcc/
         echo "PATH: $PATH"
         i586-pc-msdosdjgpp-gcc --version
     - name: Mac Setup
@@ -44,7 +45,7 @@ jobs:
     - name: Configure (DOS)
       if: matrix.true-os == 'dos'
 #     run: ./configure --build x86_64-pc-linux-gnu --host i586-pc-msdosdjgpp
-      run: ./configure --host i586-pc-msdosdjgpp --prefix=${PWD}/djgpp/lib/gcc/
+      run: ./configure --host i586-pc-msdosdjgpp --prefix=${BASE_DIR}/lib/gcc/
     - name: make
 #     if: matrix.true-os == 'native'
       run: |
