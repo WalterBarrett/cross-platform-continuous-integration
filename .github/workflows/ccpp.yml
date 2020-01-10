@@ -31,8 +31,6 @@ jobs:
         tar -xf djgpp-linux64-gcc720.tar.bz2
         export PATH=${PWD}/djgpp/bin/:$PATH
         make PREFIX="i586-pc-msdosdjgpp-" MAIN="HELLO.EXE"
-    - name: List Directory Structure
-      run: ls -l
     - name: Stash (Native)
       if: matrix.true-os == 'native'
       uses: actions/upload-artifact@v1
@@ -47,7 +45,6 @@ jobs:
         cd temp-extract-dir
         wget -q http://sandmann.dotster.com/cwsdpmi/csdpmi7b.zip
         unzip -q csdpmi7b.zip
-        ls -l
         cd ..
         mv HELLO.EXE temp-dist-dir/HELLO.EXE
         mv temp-extract-dir/bin/CWSDPMI.EXE temp-dist-dir/CWSDPMI.EXE
