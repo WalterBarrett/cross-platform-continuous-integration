@@ -11,20 +11,20 @@ jobs:
         os: [ubuntu, macos, windows]
     steps:
     - name: "macOS: Setup"
-      if: matrix.os == 'macos-latest'
+      if: matrix.os == 'macos'
       run: brew install autoconf automake libtool
     - name: Checkout
       uses: actions/checkout@v1
     - name: Build (Native)
       run: make
     - name: "*nix: Stash"
-      if: matrix.os != 'windows-latest'
+      if: matrix.os != 'windows'
       uses: actions/upload-artifact@v1
       with:
         name: helloworld-${{ matrix.os }}
         path: helloworld
     - name: "Windows: Stash"
-      if: matrix.os == 'windows-latest'
+      if: matrix.os == 'windows'
       uses: actions/upload-artifact@v1
       with:
         name: helloworld-${{ matrix.os }}
