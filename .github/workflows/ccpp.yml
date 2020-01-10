@@ -16,16 +16,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
     - name: Build (Native)
-      if: matrix.true-os == 'native'
       run: make
     - name: "*nix: Stash"
-      if: matrix.true-os == 'native'
       uses: actions/upload-artifact@v1
       with:
         name: helloworld-${{ matrix.os }}
         path: helloworld
     - name: "Windows: Stash"
-      if: matrix.true-os == 'native'
       uses: actions/upload-artifact@v1
       with:
         name: helloworld-${{ matrix.os }}
@@ -40,14 +37,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
     - name: "DOS: Build"
-      if: matrix.true-os == 'dos'
+      if: matrix.os == 'dos'
       run: |
         wget -q https://github.com/andrewwutw/build-djgpp/releases/download/v2.8/djgpp-linux64-gcc720.tar.bz2
         tar -xf djgpp-linux64-gcc720.tar.bz2
         export PATH=${PWD}/djgpp/bin/:$PATH
         make PREFIX="i586-pc-msdosdjgpp-" MAIN="HELLO.EXE"
     - name: "DOS: Prepare for Stash"
-      if: matrix.true-os == 'dos'
+      if: matrix.os == 'dos'
       run: |
         mkdir temp-dist-dir
         mkdir temp-extract-dir
@@ -60,8 +57,8 @@ jobs:
     - name: List Directory Structure
       run: ls
     - name: "DOS: Stash"
-      if: matrix.true-os == 'dos'
+      if: matrix.os == 'dos'
       uses: actions/upload-artifact@v1
       with:
-        name: helloworld-${{ matrix.true-os }}
+        name: helloworld-${{ matrix.os }}
         path: temp-dist-dir
