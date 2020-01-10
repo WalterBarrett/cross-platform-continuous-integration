@@ -22,6 +22,8 @@ jobs:
         wget https://github.com/andrewwutw/build-djgpp/releases/download/v2.8/djgpp-linux64-gcc720.tar.bz2
         tar -xvf djgpp-linux64-gcc720.tar.bz2
         export PATH=$PWD/djgpp/bin:$PATH
+        echo "### PATH ###"
+        echo $PATH
         echo "### List Directory Structure ###"
         ls -l
     - name: Mac Setup
