@@ -51,6 +51,7 @@ jobs:
         sudo apt install cc65
         export PATH=${PWD}/djgpp/bin/:$PATH
         make CC="cl65" COPTS="-t c64"
+        mv helloworld helloworld.c64
     - name: "DOS: Prepare for Stash"
       if: matrix.os == 'dos'
       run: |
@@ -70,3 +71,9 @@ jobs:
       with:
         name: helloworld-${{ matrix.os }}
         path: temp-dist-dir
+    - name: "C64: Stash"
+      if: matrix.os == 'dos'
+      uses: actions/upload-artifact@v1
+      with:
+        name: helloworld-${{ matrix.os }}
+        path: helloworld.c64
